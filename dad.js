@@ -39,12 +39,21 @@ var outDir = argv.outDir || DEFAULT_OUT_DIR;
 var max = parseInt(argv.max, 10) || DEFAULT_MAX;
 
 var resources = files.reduce(function (res, file) {
-  var obj = require(path.resolve(file));
-  for (var k in obj) res[path.join(outDir, k)] = obj[k];
+  var obj = require(path.resolve(file)); // 可以是 Object, 也可以是 Array
+  var k, v, dir, name;
+  for (k in obj) {
+    v = obj[k];
+    dir = path.dirname(v.replace(/^https?:\/\/[^\/]+\//, ''));
+    name = path.basename(v);
+    res[path.join(outDir, dir, name)] = v;
+  }
   return res;
 }, {});
 
 
+
+
+resources = unifyObjectValueLength(resources);
 if (max === 0) {
   async.forEachOf(resources, download, error);
 } else {
@@ -53,18 +62,29 @@ if (max === 0) {
 
 function download(remote, local, done) {
 
-  var remoteDir = path.dirname(remote.replace(/^https?:\/\/[^\/]+\//, ''));
-
-  Log('  **DOWNLOADING** ~%s~ **...**', remote);
+  Log('  **DOWNLOADING** ~%s~ TO ^%s^ **...**', remote, local);
 
   new Download()
-    .get(remote)
-    .rename(path.basename(remote))
-    .dest(path.join(outDir, remoteDir))
+    .get(remote.trim())
+    .rename(path.basename(local))
+    .dest(path.dirname(local))
     .run(done);
 }
 
 function error(err) {
   if (err) throw err;
   else Log('&\n  Finished!!!\n&');
+}
+
+function unifyObjectValueLength(obj) {
+  var keys = Object.keys(obj);
+  var res = {};
+  var max = 0;
+  keys.forEach(function (k) {
+    if (obj[k].length > max) max = obj[k].length;
+  });
+  keys.forEach(function (k) {
+    res[k] = obj[k] + new Array(max - obj[k].length + 1).join(' ');
+  });
+  return res;
 }
