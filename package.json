@@ -1,6 +1,6 @@
 {
   "name": "deploy-asset-download",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "下载指定的 JSON 文件中的资源到本地",
   "main": "dad.js",
   "preferGlobal": true,

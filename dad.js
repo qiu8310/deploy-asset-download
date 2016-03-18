@@ -52,16 +52,19 @@ if (max === 0) {
 }
 
 function download(remote, local, done) {
-  Log('**DOWNLOAD** ~%s~ **TO** ^%s^ **...**', remote, local);
+
+  var remoteDir = path.dirname(remote.replace(/^https?:\/\/[^\/]+\//, ''));
+
+  Log('  **DOWNLOADING** ~%s~ **...**', remote);
 
   new Download()
     .get(remote)
-    .rename(path.basename(local))
-    .dest(path.dirname(path.resolve(local)))
+    .rename(path.basename(remote))
+    .dest(path.join(outDir, remoteDir))
     .run(done);
 }
 
 function error(err) {
   if (err) throw err;
-  else Log('&\n\t Finished!!!\n&');
+  else Log('&\n  Finished!!!\n&');
 }
