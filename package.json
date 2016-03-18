@@ -1,0 +1,31 @@
+{
+  "name": "deploy-asset-download",
+  "version": "0.0.1",
+  "description": "下载指定的 JSON 文件中的资源到本地",
+  "main": "dad.js",
+  "preferGlobal": true,
+  "bin": {
+    "dad": "dad.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qiu8310/deploy-asset-download.git"
+  },
+  "keywords": [
+    "deploy",
+    "asset",
+    "download"
+  ],
+  "author": "Mora",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/qiu8310/deploy-asset-release/issues"
+  },
+  "homepage": "https://github.com/qiu8310/deploy-asset-release#readme",
+  "dependencies": {
+    "async": "^1.5.2",
+    "download": "^4.4.3",
+    "lac": "0.0.8",
+    "yargs-cn": "^4.0.1"
+  }
+}
